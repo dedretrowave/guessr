@@ -22,6 +22,7 @@ namespace EventBus
         ON_UNPAUSE,
         // ADS
         ON_AD_OPEN,
+        ON_AD_WATCHED,
         ON_REWARDED_OPEN,
         ON_REWARDED_SKIPPED,
         ON_REWARDED_WATCHED,

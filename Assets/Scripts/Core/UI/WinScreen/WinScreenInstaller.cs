@@ -24,13 +24,13 @@ namespace Core.UI.WinScreen
 
             _scorePresenter = DependencyContext.Dependencies.Get<ScorePresenter>();
             
-            _eventBus.AddListener(EventName.ON_ALL_LEVELS_PASSED, OnAllLevelsPassed);
+            // _eventBus.AddListener(EventName.ON_ALL_LEVELS_PASSED, OnAllLevelsPassed);
             _view.OnBack += OnBack;
         }
 
         public void Disable()
         {
-            _eventBus.RemoveListener(EventName.ON_ALL_LEVELS_PASSED, OnAllLevelsPassed);
+            // _eventBus.RemoveListener(EventName.ON_ALL_LEVELS_PASSED, OnAllLevelsPassed);
             _view.OnBack -= OnBack;
         }
 

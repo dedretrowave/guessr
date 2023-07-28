@@ -1,3 +1,4 @@
+using System;
 using Core.Differs;
 using Core.Entries;
 using Core.Levels;
@@ -7,6 +8,7 @@ using Core.UI.LoseScreen;
 using Core.UI.PauseScreen;
 using Core.UI.WinScreen;
 using EventBus;
+using Save;
 using UnityEngine;
 
 namespace Core
@@ -25,6 +27,8 @@ namespace Core
 
         private EventBus.EventBus _eventBus;
 
+        private bool _allLevelsPassed;
+
         private void Start()
         {
             _eventBus = EventBus.EventBus.Instance;
@@ -38,7 +42,7 @@ namespace Core
             _eventBus.AddListener(EventName.ON_AD_OPEN, _ads.ShowAd);
             _eventBus.AddListener(EventName.ON_REWARDED_OPEN, _ads.ShowRewarded);
 
-            _levelsContainer = new();
+            _levelsContainer = new(_score.Score);
             _levelStarter.StartLevel(_levelsContainer.GetCurrent());
 
             _eventBus.AddListener(EventName.ON_ALL_DIFFERS_FOUND, OnComplete);
@@ -76,12 +80,16 @@ namespace Core
         private void OnComplete()
         {
             _levelStarter.EndLevel();
-            DiffersInstaller nextLevel = _levelsContainer.GetNext();
+
+            DiffersInstaller nextLevel = _allLevelsPassed ?
+                _levelsContainer.GetRandom() 
+                : _levelsContainer.GetNext();
 
             if (nextLevel == null)
             {
                 _eventBus.TriggerEvent(EventName.ON_ALL_LEVELS_PASSED);
-                return;
+                _allLevelsPassed = true;
+                nextLevel = _levelsContainer.GetRandom();
             }
             
             _levelStarter.StartLevel(nextLevel);

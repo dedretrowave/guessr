@@ -11,7 +11,7 @@ mergeInto(LibraryManager.library, {
         ysdk.adv.showFullscreenAdv({
             callbacks: {
                 onClose: function(wasShown) {
-                  // some action after close
+                    SendMessage("Ads", "InvokeAdWatched");
                 },
                 onError: function(error) {
                   // some action on error

@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using Save;
+using UnityEngine;
 
 namespace Core.Score.Model
 {
@@ -27,6 +28,16 @@ namespace Core.Score.Model
         public ScoreModel(int score)
         {
             _score = score;
+        }
+
+        public void MarkAllLevelsPassed()
+        {
+            _save.Save(LoadPath, this);
+        }
+
+        public void MarkAllLevelsNotPassed()
+        {
+            _save.Save(LoadPath, this);
         }
 
         public void IncreaseScore()

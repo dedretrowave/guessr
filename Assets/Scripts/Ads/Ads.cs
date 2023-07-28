@@ -30,6 +30,11 @@ namespace Ads
 #endif
         }
 
+        private void InvokeAdWatched()
+        {
+            _eventBus.TriggerEvent(EventName.ON_AD_WATCHED);
+        }
+
         private void InvokeRewardedWatched()
         {
             _eventBus.TriggerEvent(EventName.ON_REWARDED_WATCHED);
