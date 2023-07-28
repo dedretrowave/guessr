@@ -6,7 +6,6 @@ using Core.Music;
 using Core.Score;
 using Core.UI.LoseScreen;
 using Core.UI.PauseScreen;
-using Core.UI.WinScreen;
 using EventBus;
 using Save;
 using UnityEngine;
@@ -17,7 +16,6 @@ namespace Core
     {
         [SerializeField] private Ads.Ads _ads;
         [SerializeField] private LevelStarter _levelStarter;
-        [SerializeField] private WinScreenInstaller _winScreen;
         [SerializeField] private LoseScreenInstaller _loseScreen;
         [SerializeField] private PauseInstaller _pause;
         [SerializeField] private ScoreInstaller _score;
@@ -34,7 +32,6 @@ namespace Core
             _eventBus = EventBus.EventBus.Instance;
 
             _score.Construct();
-            _winScreen.Construct();
             _loseScreen.Construct();
             _pause.Construct();
             _music.Construct();
@@ -53,7 +50,6 @@ namespace Core
         private void OnDisable()
         {
             _score.Disable();
-            _winScreen.Disable();
             _loseScreen.Disable();
             _pause.Disable();
             _levelStarter.EndLevel();
