@@ -53,11 +53,11 @@ namespace Core.UI.LoseScreen
         {
             _eventBus.AddListener(EventName.ON_REWARDED_WATCHED, OnMoreTimeApplied);
             _eventBus.TriggerEvent(EventName.ON_REWARDED_OPEN);
-            _view.Hide();
         }
 
         private void OnMoreTimeApplied()
         {
+            _view.Hide();
             _eventBus.RemoveListener(EventName.ON_REWARDED_WATCHED, OnMoreTimeApplied);
             _eventBus.TriggerEvent(EventName.ON_MORE_TIME);
         }

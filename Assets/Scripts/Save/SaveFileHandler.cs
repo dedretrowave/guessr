@@ -1,5 +1,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
+using DI;
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -8,6 +9,8 @@ namespace Save
     public class SaveFileHandler
     {
         private string _serializedData;
+
+        private SaveMediator _mediator;
         
         [DllImport("__Internal")]
         private static extern void SaveExternal(string fieldName, string data);
@@ -15,12 +18,18 @@ namespace Save
         [DllImport("__Internal")]
         private static extern void GetSerializedExternal(string fieldName);
 
+        public SaveFileHandler()
+        {
+            _mediator = DependencyContext.Dependencies.Get<SaveMediator>();
+        }
+
         public T Load<T>(string path)
         {
 #if UNITY_EDITOR
             _serializedData = GetSerializedInternal(path);
 #elif UNITY_WEBGL
             GetSerializedExternal(path);
+            _serializedData = _mediator.SerializedData;
 #endif
             return JsonConvert.DeserializeObject<T>(_serializedData ?? "");
         }

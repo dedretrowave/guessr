@@ -16,8 +16,6 @@ namespace Core.Differs.Components
         {
             _eventBus.TriggerEvent(EventName.ON_REWARDED_OPEN);
             _eventBus.AddListener(EventName.ON_REWARDED_WATCHED, TriggerHint);
-            //TODO: DELETE ON RELEASE
-            _eventBus.TriggerEvent(EventName.ON_REWARDED_WATCHED);
         }
 
         private void TriggerHint()

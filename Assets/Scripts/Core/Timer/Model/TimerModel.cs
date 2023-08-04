@@ -13,7 +13,15 @@ namespace Core.Timer.Model
 
         public void Decrease(int amount)
         {
-            _currentTime -= amount;
+            int newTime = _currentTime - amount;
+
+            if (newTime < 0)
+            {
+                _currentTime = 0;
+                return;
+            }
+
+            _currentTime = newTime;
         }
 
         public void Increase(int amount)

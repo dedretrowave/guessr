@@ -16,12 +16,14 @@ namespace Core.UI.PauseScreen
 
             _view.OnClose += Unpause;
             _view.OnOpen += Pause;
+            _view.OnBackToMenu += OnBackToMenu;
         }
 
         public void Disable()
         {
             _view.OnClose -= Unpause;
             _view.OnOpen -= Pause;
+            _view.OnBackToMenu -= OnBackToMenu;
         }
 
         private void Pause()
@@ -32,6 +34,11 @@ namespace Core.UI.PauseScreen
         private void Unpause()
         {
             _eventBus.TriggerEvent(EventName.ON_UNPAUSE);
+        }
+
+        private void OnBackToMenu()
+        {
+            _eventBus.TriggerEvent(EventName.ON_BACK_TO_MENU);
         }
     }
 }

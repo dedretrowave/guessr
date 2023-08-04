@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using EventBus;
 using UnityEngine;
@@ -13,6 +14,11 @@ namespace Ads
 
         [DllImport("__Internal")]
         private static extern void ShowRewardedExternal();
+
+        private void Awake()
+        {
+            _eventBus = EventBus.EventBus.Instance;
+        }
 
         public void ShowRewarded()
         {
@@ -30,17 +36,17 @@ namespace Ads
 #endif
         }
 
-        private void InvokeAdWatched()
+        public void InvokeAdWatched()
         {
             _eventBus.TriggerEvent(EventName.ON_AD_WATCHED);
         }
 
-        private void InvokeRewardedWatched()
+        public void InvokeRewardedWatched()
         {
             _eventBus.TriggerEvent(EventName.ON_REWARDED_WATCHED);
         }
 
-        private void InvokeRewardedSkipped()
+        public void InvokeRewardedSkipped()
         {
             _eventBus.TriggerEvent(EventName.ON_REWARDED_SKIPPED);
         }

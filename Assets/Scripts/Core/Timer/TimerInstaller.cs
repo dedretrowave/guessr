@@ -11,6 +11,7 @@ namespace Core.Timer
         [SerializeField] private TimerView _view;
         [SerializeField] private int _initialTimeInSecs;
         [SerializeField] private int _onWrongTimeLoss;
+        [SerializeField] private int _increaseAfterAd = 80;
 
         private EventBus.EventBus _eventBus;
         
@@ -28,6 +29,14 @@ namespace Core.Timer
             _eventBus.AddListener(EventName.ON_WRONG_DIFFER_FOUND, OnWrongDifferFound);
             _eventBus.AddListener(EventName.ON_PAUSE, StopCountdown);
             _eventBus.AddListener(EventName.ON_UNPAUSE, StartCountdown);
+            _eventBus.AddListener(EventName.ON_MORE_TIME, AddMinute);
+            
+            _eventBus.AddListener(EventName.ON_REWARDED_OPEN, StopCountdown);
+            _eventBus.AddListener(EventName.ON_AD_OPEN, StopCountdown);
+            
+            _eventBus.AddListener(EventName.ON_REWARDED_WATCHED, StartCountdown);
+            _eventBus.AddListener(EventName.ON_REWARDED_SKIPPED, StartCountdown);
+            _eventBus.AddListener(EventName.ON_AD_WATCHED, StartCountdown);
 
             StartCountdown();
         }
@@ -38,8 +47,24 @@ namespace Core.Timer
             _eventBus.RemoveListener(EventName.ON_WRONG_DIFFER_FOUND, OnWrongDifferFound);
             _eventBus.RemoveListener(EventName.ON_PAUSE, StopCountdown);
             _eventBus.RemoveListener(EventName.ON_UNPAUSE, StartCountdown);
+            _eventBus.RemoveListener(EventName.ON_MORE_TIME, AddMinute);
+         
+            _eventBus.RemoveListener(EventName.ON_REWARDED_OPEN, StopCountdown);
+            _eventBus.RemoveListener(EventName.ON_AD_OPEN, StopCountdown);
+         
+            _eventBus.RemoveListener(EventName.ON_REWARDED_WATCHED, StartCountdown);
+            _eventBus.RemoveListener(EventName.ON_REWARDED_SKIPPED, StartCountdown);
+            _eventBus.RemoveListener(EventName.ON_AD_WATCHED, StartCountdown);
+
             
             StopCountdown();
+        }
+
+        private void AddMinute()
+        {
+            _presenter.Increase(_increaseAfterAd);
+            
+            StartCountdown();
         }
 
         private void OnTimeout()
@@ -55,6 +80,7 @@ namespace Core.Timer
 
         private void StartCountdown()
         {
+            StopCountdown();
             _timeout = StartCoroutine(Countdown());
         }
         

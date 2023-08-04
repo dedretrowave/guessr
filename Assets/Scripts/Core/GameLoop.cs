@@ -6,9 +6,11 @@ using Core.Music;
 using Core.Score;
 using Core.UI.LoseScreen;
 using Core.UI.PauseScreen;
+using DI;
 using EventBus;
 using Save;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Core
 {
@@ -20,6 +22,7 @@ namespace Core
         [SerializeField] private PauseInstaller _pause;
         [SerializeField] private ScoreInstaller _score;
         [SerializeField] private MusicInstaller _music;
+        [SerializeField] private SaveMediator _saveMediator;
 
         private LevelsContainer _levelsContainer;
 
@@ -30,6 +33,8 @@ namespace Core
         private void Start()
         {
             _eventBus = EventBus.EventBus.Instance;
+            
+            DependencyContext.Dependencies.Add(new(typeof(SaveMediator), () => _saveMediator));
 
             _score.Construct();
             _loseScreen.Construct();
@@ -44,7 +49,7 @@ namespace Core
 
             _eventBus.AddListener(EventName.ON_ALL_DIFFERS_FOUND, OnComplete);
             _eventBus.AddListener(EventName.ON_REPLAY, OnReplay);
-            _eventBus.AddListener(EventName.ON_TIMEOUT, OnLose);
+            _eventBus.AddListener(EventName.ON_BACK_TO_MENU, OnBackToMenu);
         }
 
         private void OnDisable()
@@ -52,6 +57,7 @@ namespace Core
             _score.Disable();
             _loseScreen.Disable();
             _pause.Disable();
+            _music.Disable();
             _levelStarter.EndLevel();
             
             _eventBus.RemoveListener(EventName.ON_AD_OPEN, _ads.ShowAd);
@@ -59,12 +65,7 @@ namespace Core
             
             _eventBus.RemoveListener(EventName.ON_ALL_DIFFERS_FOUND, OnComplete);
             _eventBus.RemoveListener(EventName.ON_REPLAY, OnReplay);
-            _eventBus.RemoveListener(EventName.ON_TIMEOUT, OnLose);
-        }
-
-        private void OnLose()
-        {
-            _levelStarter.EndLevel();
+            _eventBus.RemoveListener(EventName.ON_BACK_TO_MENU, OnBackToMenu);
         }
 
         private void OnReplay()
@@ -89,6 +90,11 @@ namespace Core
             }
             
             _levelStarter.StartLevel(nextLevel);
+        }
+
+        private void OnBackToMenu()
+        {
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }

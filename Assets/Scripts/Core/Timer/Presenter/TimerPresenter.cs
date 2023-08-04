@@ -33,7 +33,7 @@ namespace Core.Timer.Presenter
             _model.Decrease(amount);
             _view.SetTime(_model.CurrentTime);
 
-            if (_model.CurrentTime <= 0)
+            if (_model.CurrentTime == 0)
             {
                 OnTimeout?.Invoke();
             }

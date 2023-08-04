@@ -38,8 +38,6 @@ namespace Core.Entries
             {
                 _levelIndex = 0;
                 _eventBus.TriggerEvent(EventName.ON_AD_OPEN);
-                _eventBus.AddListener(EventName.ON_AD_WATCHED, DestroyLevel);
-                return;
             }
             
             DestroyLevel();
@@ -47,7 +45,6 @@ namespace Core.Entries
 
         private void DestroyLevel()
         {
-            _eventBus.RemoveListener(EventName.ON_AD_WATCHED, DestroyLevel);
             _guessesInstaller.Disable();
             _timer.Disable();
             _installer.Disable();

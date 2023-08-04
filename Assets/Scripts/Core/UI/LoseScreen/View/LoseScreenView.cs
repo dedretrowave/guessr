@@ -20,7 +20,7 @@ namespace Core.UI.LoseScreen.View
         {
             _back.onClick.AddListener(OnBackPressed);
             _replay.onClick.AddListener(OnReplayPressed);
-            _replay.onClick.AddListener(OnMoreTimePressed);
+            _moreTime.onClick.AddListener(OnMoreTimePressed);
         }
 
         public void Show()
