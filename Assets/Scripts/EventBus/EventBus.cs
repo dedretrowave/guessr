@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEngine;
 
 namespace EventBus
 {
@@ -93,8 +94,15 @@ namespace EventBus
 
             if (_events.ContainsKey(key))
             {
-                currentEvent = (Action)_events[key];
-                currentEvent.Invoke();
+                try
+                {
+                    currentEvent = (Action)_events[key];
+                    currentEvent.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e.Message);
+                }
             }
         }
 

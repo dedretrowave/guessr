@@ -32,8 +32,7 @@ namespace Core.Music
             _eventBus.AddListener(EventName.ON_REWARDED_OPEN, _presenter.Mute);
             _eventBus.AddListener(EventName.ON_AD_OPEN, _presenter.Mute);
             
-            _eventBus.AddListener(EventName.ON_REWARDED_WATCHED, _presenter.Unmute);
-            _eventBus.AddListener(EventName.ON_REWARDED_SKIPPED, _presenter.Unmute);
+            _eventBus.AddListener(EventName.ON_REWARDED_CLOSED, _presenter.Unmute);
             _eventBus.AddListener(EventName.ON_AD_WATCHED, _presenter.Unmute);
         }
 
@@ -42,8 +41,7 @@ namespace Core.Music
             _eventBus.RemoveListener(EventName.ON_REWARDED_OPEN, _presenter.Mute);
             _eventBus.RemoveListener(EventName.ON_AD_OPEN, _presenter.Mute);
             
-            _eventBus.RemoveListener(EventName.ON_REWARDED_WATCHED, _presenter.Unmute);
-            _eventBus.RemoveListener(EventName.ON_REWARDED_SKIPPED, _presenter.Unmute);
+            _eventBus.RemoveListener(EventName.ON_REWARDED_CLOSED, _presenter.Unmute);
             _eventBus.RemoveListener(EventName.ON_AD_WATCHED, _presenter.Unmute);
         }
     }

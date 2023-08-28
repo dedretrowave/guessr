@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.UI.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,20 +7,16 @@ namespace Core.Guesses.View
 {
     public class GuessesView : MonoBehaviour
     {
-        [SerializeField] private Image _mark;
+        [SerializeField] private GuessMark _mark;
         [SerializeField] private Transform _markPlaceHolder;
-        
-        [SerializeField] private Sprite _emptyMark;
-        [SerializeField] private Sprite _fullMark;
-        
-        private List<Image> _marks = new();
+
+        private List<GuessMark> _marks = new();
 
         public void Draw(int count)
         {
             for (int i = 0; i < count; i++)
             {
-                Image mark = Instantiate(_mark, _markPlaceHolder);
-                mark.sprite = _emptyMark;
+                GuessMark mark = Instantiate(_mark, _markPlaceHolder);
                 _marks.Add(mark);
             }
         }
@@ -40,7 +37,7 @@ namespace Core.Guesses.View
 
         public void Mark(int index)
         {
-            _marks[index].sprite = _fullMark;
+            _marks[index].SetMarked();
         }
     }
 }

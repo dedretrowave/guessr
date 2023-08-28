@@ -41,7 +41,6 @@ namespace Core.Music.Presenter
         public void SetEnabled(bool value)
         {
             _model.SetEnabled(value);
-            // _saveFileHandler.Save(LoadPath, _model);
             _view.SetEnabled(_model.IsEnabled);
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Runtime.InteropServices;
 using EventBus;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace Ads
     public class Ads : MonoBehaviour
     {
         private EventBus.EventBus _eventBus;
+        private bool _isReady = true;
         
         [DllImport("__Internal")]
         private static extern void ShowAdExternal();
@@ -29,11 +31,28 @@ namespace Ads
 
         public void ShowAd()
         {
+            if (!_isReady)
+            {
+                InvokeAdWatched();
+                return;
+            }
+            
 #if  !UNITY_EDITOR
+        StartCoroutine(FreezeAds());
+
         ShowAdExternal();
 #else
             Debug.Log("Very interesting Ad!");
 #endif
+        }
+
+        private IEnumerator FreezeAds()
+        {
+            _isReady = false;
+            
+            yield return new WaitForSeconds(60);
+
+            _isReady = true;
         }
 
         public void InvokeAdWatched()
@@ -46,9 +65,9 @@ namespace Ads
             _eventBus.TriggerEvent(EventName.ON_REWARDED_WATCHED);
         }
 
-        public void InvokeRewardedSkipped()
+        public void InvokeRewardedClosed()
         {
-            _eventBus.TriggerEvent(EventName.ON_REWARDED_SKIPPED);
+            _eventBus.TriggerEvent(EventName.ON_REWARDED_CLOSED);
         }
     }
 }

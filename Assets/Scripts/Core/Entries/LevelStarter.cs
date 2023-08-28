@@ -17,30 +17,34 @@ namespace Core.Entries
         private EventBus.EventBus _eventBus;
 
         private DiffersInstaller _installer;
-
-        private int _levelIndex;
+        private DiffersInstaller _currentLevel;
 
         public void StartLevel(DiffersInstaller differsInstaller)
         {
             _eventBus = EventBus.EventBus.Instance;
+            _currentLevel = differsInstaller;
             
-            _levelIndex++;
-            _installer = Instantiate(differsInstaller, _differsPlaceholder);
-            
-            _installer.Construct();
-            _guessesInstaller.Construct(_installer.TotalDiffers);
-            _timer.Construct();
+            _eventBus.TriggerEvent(EventName.ON_AD_OPEN);
+            _eventBus.AddListener(EventName.ON_AD_WATCHED, SpawnLevel);
+
+            SpawnLevel();
+            _eventBus.RemoveListener(EventName.ON_AD_WATCHED, SpawnLevel);
         }
 
         public void EndLevel()
         {
-            if (_levelIndex == 2)
-            {
-                _levelIndex = 0;
-                _eventBus.TriggerEvent(EventName.ON_AD_OPEN);
-            }
+            _eventBus.RemoveListener(EventName.ON_AD_WATCHED, SpawnLevel);
             
             DestroyLevel();
+        }
+
+        private void SpawnLevel()
+        {
+            _installer = Instantiate(_currentLevel, _differsPlaceholder);
+            
+            _installer.Construct();
+            _guessesInstaller.Construct(_installer.TotalDiffers);
+            _timer.Construct();
         }
 
         private void DestroyLevel()

@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6182478537617279804}
   - component: {fileID: 5709185532480800300}
+  - component: {fileID: 2359617358664908142}
   - component: {fileID: 2134937172154205507}
+  - component: {fileID: 2930913549073220394}
   m_Layer: 5
   m_Name: Mark
   m_TagString: Untagged
@@ -31,7 +33,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -46,6 +47,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3580839831666403751}
   m_CullTransparentMesh: 1
+--- !u!114 &2359617358664908142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3580839831666403751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a508317a1f043af8da0830141272e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image: {fileID: 2134937172154205507}
+  _animator: {fileID: 2930913549073220394}
+  _emptyMark: {fileID: 21300000, guid: 127f0eb224d2e5e4a82fd1de79c4fc47, type: 3}
+  _fullMark: {fileID: 21300000, guid: 2c516c7ea9c544c42ae2a70999c96136, type: 3}
 --- !u!114 &2134937172154205507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,3 +93,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &2930913549073220394
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3580839831666403751}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c90475f63df1dd14692ed6678bc31036, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

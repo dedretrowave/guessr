@@ -34,8 +34,7 @@ namespace Core.Timer
             _eventBus.AddListener(EventName.ON_REWARDED_OPEN, StopCountdown);
             _eventBus.AddListener(EventName.ON_AD_OPEN, StopCountdown);
             
-            _eventBus.AddListener(EventName.ON_REWARDED_WATCHED, StartCountdown);
-            _eventBus.AddListener(EventName.ON_REWARDED_SKIPPED, StartCountdown);
+            _eventBus.AddListener(EventName.ON_REWARDED_CLOSED, StartCountdown);
             _eventBus.AddListener(EventName.ON_AD_WATCHED, StartCountdown);
 
             StartCountdown();
@@ -51,9 +50,8 @@ namespace Core.Timer
          
             _eventBus.RemoveListener(EventName.ON_REWARDED_OPEN, StopCountdown);
             _eventBus.RemoveListener(EventName.ON_AD_OPEN, StopCountdown);
-         
-            _eventBus.RemoveListener(EventName.ON_REWARDED_WATCHED, StartCountdown);
-            _eventBus.RemoveListener(EventName.ON_REWARDED_SKIPPED, StartCountdown);
+            
+            _eventBus.RemoveListener(EventName.ON_REWARDED_CLOSED, StartCountdown);
             _eventBus.RemoveListener(EventName.ON_AD_WATCHED, StartCountdown);
 
             

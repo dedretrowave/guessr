@@ -17,8 +17,9 @@ namespace Core.Levels
         private SaveFileHandler _save;
         private int _currentLevelIndex;
         private LevelsData _data;
+        private bool _allLevelsPassed;
 
-        public LevelsContainer(int startingIndex)
+        public LevelsContainer()
         {
             _save = new();
             _levels = new(Resources.LoadAll<DiffersInstaller>(Path));
@@ -27,7 +28,7 @@ namespace Core.Levels
 
             if (_data == null)
             {
-                _data = new(_levels.Count);
+                _data = new(_levels.Count, 0);
                 _save.Save(LoadPath, _data);
                 _currentLevelIndex = 0;
                 return;
@@ -35,25 +36,37 @@ namespace Core.Levels
 
             if (_data.NumberOfLevels < _levels.Count)
             {
-                _data = new(_levels.Count);
+                _data = new(_levels.Count, _data.LastPassedLevel);
                 _save.Save(LoadPath, _data);
-                _currentLevelIndex = _levels.Count - 1;
+                _currentLevelIndex = _data.LastPassedLevel;
                 return;
             }
 
-            if (startingIndex >= _levels.Count)
+            if (_data.LastPassedLevel == _levels.Count)
             {
+                _allLevelsPassed = true;
                 _currentLevelIndex = Random.Range(0, _levels.Count);
                 return;
             }
             
-            _currentLevelIndex = startingIndex;
+            _currentLevelIndex = _data.LastPassedLevel;
+        }
+
+        public void Disable()
+        {
+            _save.Save(LoadPath, _data);
         }
 
         public DiffersInstaller GetNext()
         {
-            _currentLevelIndex++;
+            if (_allLevelsPassed)
+            {
+                return GetRandom();
+            }
             
+            _currentLevelIndex++;
+            _data.LastPassedLevel++;
+
             return GetCurrent();
         }
 
@@ -65,12 +78,14 @@ namespace Core.Levels
             }
             catch (ArgumentOutOfRangeException)
             {
-                return null;
+                _allLevelsPassed = true;
+                return GetRandom();
             }
         }
 
         public DiffersInstaller GetRandom()
         {
+            Debug.Log("RANDOM LEVEL!");
             int index = Random.Range(0, _levels.Count);
             _currentLevelIndex = index;
             return GetCurrent();
@@ -81,14 +96,31 @@ namespace Core.Levels
     internal class LevelsData
     {
         private int _numberOfLevels;
+        private int _lastPassedLevel;
         public int NumberOfLevels => _numberOfLevels;
+        public int LastPassedLevel
+        {
+            get => _lastPassedLevel;
+            set
+            {
+                if (value >= _numberOfLevels)
+                {
+                    _lastPassedLevel = _numberOfLevels;
+                    return;
+                }
+
+                _lastPassedLevel = value;
+                Debug.Log(_lastPassedLevel);
+            }
+        }
 
         [JsonConstructor]
-        public LevelsData(int numberOfLevels)
+        public LevelsData(int numberOfLevels, int lastPassedLevel)
         {
             if (_numberOfLevels < 0) return;
             
             _numberOfLevels = numberOfLevels;
+            _lastPassedLevel = lastPassedLevel;
         }
     }
 }
