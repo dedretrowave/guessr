@@ -9,8 +9,6 @@ namespace Core.Score.Presenter
 
         private ScoreModel _model;
 
-        public int Score => _model.Score;
-
         public ScorePresenter(ScoreView view)
         {
             _view = view;
@@ -24,11 +22,6 @@ namespace Core.Score.Presenter
         {
             _model.IncreaseScore();
             _view.SetScore(_model.Score);
-        }
-
-        public int GetCurrentScore()
-        {
-            return _model.Score;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Exception = System.Exception;
 
 namespace EventBus
 {
@@ -64,14 +65,21 @@ namespace EventBus
         
         public void RemoveListener(EventName name, Action callback)
         {
-            Action currentEvent = null;
-            string key = name.ToString();
-
-            if (_events.ContainsKey(key))
+            try
             {
-                currentEvent = (Action)_events[key];
-                currentEvent -= callback;
-                _events[key] = currentEvent;
+                Action currentEvent = null;
+                string key = name.ToString();
+
+                if (_events.ContainsKey(key))
+                {
+                    currentEvent = (Action)_events[key];
+                    currentEvent -= callback;
+                    _events[key] = currentEvent;
+                }
+            }
+            catch (Exception)
+            {
+                //ignored
             }
         }
 

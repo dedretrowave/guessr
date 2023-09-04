@@ -37,9 +37,9 @@ namespace Ads
                 return;
             }
             
+            StartCoroutine(FreezeAds());
+            
 #if  !UNITY_EDITOR
-        StartCoroutine(FreezeAds());
-
         ShowAdExternal();
 #else
             Debug.Log("Very interesting Ad!");
@@ -50,7 +50,7 @@ namespace Ads
         {
             _isReady = false;
             
-            yield return new WaitForSeconds(60);
+            yield return new WaitForSeconds(65);
 
             _isReady = true;
         }
@@ -63,11 +63,6 @@ namespace Ads
         public void InvokeRewardedWatched()
         {
             _eventBus.TriggerEvent(EventName.ON_REWARDED_WATCHED);
-        }
-
-        public void InvokeRewardedClosed()
-        {
-            _eventBus.TriggerEvent(EventName.ON_REWARDED_CLOSED);
         }
     }
 }

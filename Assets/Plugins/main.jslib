@@ -14,6 +14,7 @@ mergeInto(LibraryManager.library, {
                     SendMessage("Ads", "InvokeAdWatched");
                 },
                 onError: function(error) {
+                    SendMessage("Ads", "InvokeAdWatched");
                 }
             }
         })
@@ -26,10 +27,10 @@ mergeInto(LibraryManager.library, {
                   console.log("Rewarded Open");
                 },
                 onRewarded: () => {
-                  SendMessage("Ads", "InvokeRewardedWatched");
+                  
                 },
                 onClose: () => {
-                  SendMessage("Ads", "InvokeRewardedClosed");
+                  SendMessage("Ads", "InvokeRewardedWatched");
                 }, 
                 onError: (e) => {
                   console.log('Error while open video ad:', e);

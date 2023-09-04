@@ -18,11 +18,17 @@ namespace Core.Entries
 
         private DiffersInstaller _installer;
         private DiffersInstaller _currentLevel;
+        private bool _isLevelStarted;
+
+        private void Awake()
+        {
+            _eventBus = EventBus.EventBus.Instance;
+        }
 
         public void StartLevel(DiffersInstaller differsInstaller)
         {
-            _eventBus = EventBus.EventBus.Instance;
             _currentLevel = differsInstaller;
+            _isLevelStarted = true;
             
             _eventBus.TriggerEvent(EventName.ON_AD_OPEN);
             _eventBus.AddListener(EventName.ON_AD_WATCHED, SpawnLevel);
@@ -33,6 +39,8 @@ namespace Core.Entries
 
         public void EndLevel()
         {
+            if (!_isLevelStarted) return;
+            
             _eventBus.RemoveListener(EventName.ON_AD_WATCHED, SpawnLevel);
             
             DestroyLevel();

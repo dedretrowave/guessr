@@ -6,10 +6,12 @@ namespace Core.UI.PauseScreen.View
 {
     public class PauseView : MonoBehaviour
     {
-        [SerializeField] private Transform _body;
+        [SerializeField] private Animator _animator;
         [SerializeField] private Button _open;
         [SerializeField] private Button _close;
         [SerializeField] private Button _backToMenu;
+        
+        private readonly int _isShown = Animator.StringToHash("IsShown");
 
         public Action OnOpen;
         public Action OnClose;
@@ -24,13 +26,13 @@ namespace Core.UI.PauseScreen.View
 
         private void Show()
         {
-            _body.gameObject.SetActive(true);
+            _animator.SetBool(_isShown, true);
             OnOpen?.Invoke();
         }
 
         private void Hide()
         {
-            _body.gameObject.SetActive(false);
+            _animator.SetBool(_isShown, false);
             OnClose?.Invoke();
         }
 

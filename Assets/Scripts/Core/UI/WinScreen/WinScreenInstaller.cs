@@ -23,6 +23,7 @@ namespace Core.UI.WinScreen
             _eventBus = EventBus.EventBus.Instance;
             
             _eventBus.AddListener(EventName.ON_ALL_DIFFERS_FOUND, _view.Show);
+            _eventBus.AddListener(EventName.ON_ALL_LEVELS_PASSED, _view.ShowAllLevelsPassed);
 
             _view.OnBack += OnBack;
             _view.OnNext += OnNext;
@@ -31,6 +32,7 @@ namespace Core.UI.WinScreen
         public void Disable()
         {
             _eventBus.RemoveListener(EventName.ON_ALL_DIFFERS_FOUND, _view.Show);
+            _eventBus.RemoveListener(EventName.ON_ALL_LEVELS_PASSED, _view.ShowAllLevelsPassed);
             
             _view.OnBack -= OnBack;
             _view.OnNext -= OnNext;

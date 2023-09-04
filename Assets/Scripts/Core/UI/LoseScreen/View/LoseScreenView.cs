@@ -6,11 +6,13 @@ namespace Core.UI.LoseScreen.View
 {
     public class LoseScreenView : MonoBehaviour
     {
-        [SerializeField] private Transform _body;
+        [SerializeField] private Animator _animator;
 
         [SerializeField] private Button _back;
         [SerializeField] private Button _replay;
         [SerializeField] private Button _moreTime;
+        
+        private readonly int _isShown = Animator.StringToHash("IsShown");
 
         public Action OnBack;
         public Action OnReplay;
@@ -25,12 +27,12 @@ namespace Core.UI.LoseScreen.View
 
         public void Show()
         {
-            _body.gameObject.SetActive(true);
+            _animator.SetBool(_isShown, true);
         }
 
         public void Hide()
         {
-            _body.gameObject.SetActive(false);
+            _animator.SetBool(_isShown, false);
         }
 
         public void OnBackPressed()

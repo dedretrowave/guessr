@@ -14,8 +14,6 @@ namespace Core.Score
 
         private ScorePresenter _presenter;
 
-        public int Score => _presenter.Score;
-
         public void Construct()
         {
             _eventBus = EventBus.EventBus.Instance;

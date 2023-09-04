@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Core.Differs;
+using EventBus;
 using Newtonsoft.Json;
 using Save;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Core.Levels
 {
@@ -17,10 +17,11 @@ namespace Core.Levels
         private SaveFileHandler _save;
         private int _currentLevelIndex;
         private LevelsData _data;
-        private bool _allLevelsPassed;
+        private EventBus.EventBus _eventBus;
 
         public LevelsContainer()
         {
+            _eventBus = EventBus.EventBus.Instance;
             _save = new();
             _levels = new(Resources.LoadAll<DiffersInstaller>(Path));
 
@@ -44,51 +45,53 @@ namespace Core.Levels
 
             if (_data.LastPassedLevel == _levels.Count)
             {
-                _allLevelsPassed = true;
-                _currentLevelIndex = Random.Range(0, _levels.Count);
-                return;
+                
             }
             
             _currentLevelIndex = _data.LastPassedLevel;
+            _eventBus.AddListener(EventName.ON_ALL_DIFFERS_FOUND, IncreasePassedLevelsCount);
         }
 
         public void Disable()
         {
             _save.Save(LoadPath, _data);
+            _eventBus.RemoveListener(EventName.ON_ALL_DIFFERS_FOUND, IncreasePassedLevelsCount);
+        }
+
+        private void IncreasePassedLevelsCount()
+        {
+            _data.LastPassedLevel++;
+            _save.Save(LoadPath, _data);
+
+            if (_data.LastPassedLevel == _levels.Count)
+            {
+                _eventBus.TriggerEvent(EventName.ON_ALL_LEVELS_PASSED);
+            }
         }
 
         public DiffersInstaller GetNext()
         {
-            if (_allLevelsPassed)
-            {
-                return GetRandom();
-            }
-            
             _currentLevelIndex++;
-            _data.LastPassedLevel++;
 
             return GetCurrent();
         }
 
         public DiffersInstaller GetCurrent()
         {
+            if (_currentLevelIndex >= _levels.Count)
+            {
+                _eventBus.TriggerEvent(EventName.ON_ALL_LEVELS_PASSED);
+                return null;
+            }
+            
             try
             {
                 return _levels[_currentLevelIndex];
             }
             catch (ArgumentOutOfRangeException)
             {
-                _allLevelsPassed = true;
-                return GetRandom();
+                return null;
             }
-        }
-
-        public DiffersInstaller GetRandom()
-        {
-            Debug.Log("RANDOM LEVEL!");
-            int index = Random.Range(0, _levels.Count);
-            _currentLevelIndex = index;
-            return GetCurrent();
         }
     }
 
@@ -110,7 +113,6 @@ namespace Core.Levels
                 }
 
                 _lastPassedLevel = value;
-                Debug.Log(_lastPassedLevel);
             }
         }
 

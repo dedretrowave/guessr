@@ -46,7 +46,7 @@ namespace Core
             _eventBus.AddListener(EventName.ON_REWARDED_OPEN, _ads.ShowRewarded);
 
             _levelsContainer = new();
-            _levelStarter.StartLevel(_levelsContainer.GetCurrent());
+            StartLevel(_levelsContainer.GetCurrent());
 
             _eventBus.AddListener(EventName.ON_ALL_DIFFERS_FOUND, OnComplete);
             _eventBus.AddListener(EventName.ON_NEXT_LEVEL, StartNextLevel);
@@ -84,12 +84,19 @@ namespace Core
         {
             _levelStarter.EndLevel();
         }
-
+        
         private void StartNextLevel()
         {
             DiffersInstaller nextLevel = _levelsContainer.GetNext();
 
-            _levelStarter.StartLevel(nextLevel);
+            StartLevel(nextLevel);
+        }
+
+        private void StartLevel(DiffersInstaller level)
+        {
+            if (level == null) return;
+            
+            _levelStarter.StartLevel(level);
         }
 
         private void OnBackToMenu()
